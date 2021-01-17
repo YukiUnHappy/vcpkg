@@ -13,6 +13,7 @@ vcpkg_from_github(
         #workaround for vcpkg bug see #5697 on github for more information
         workaround_cmake_system_processor.patch
         fix-incompatibility-for-c11-c17.patch
+        fix-for-vc-ltl.patch
 )
 
 if(VCPKG_TARGET_ARCHITECTURE STREQUAL "arm" OR VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64" OR (VCPKG_CMAKE_SYSTEM_NAME AND NOT VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStore"))
@@ -36,6 +37,8 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     jpeg7 WITH_JPEG7
     jpeg8 WITH_JPEG8
 )
+
+set(VCPKG_POLICY_ALLOW_OBSOLETE_MSVCRT enabled)
 
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}

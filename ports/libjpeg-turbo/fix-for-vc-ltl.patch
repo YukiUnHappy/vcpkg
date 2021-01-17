@@ -1,0 +1,35 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 39a7a6db8..40c148f20 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -4,6 +4,8 @@ if(CMAKE_EXECUTABLE_SUFFIX)
+   set(CMAKE_EXECUTABLE_SUFFIX_TMP ${CMAKE_EXECUTABLE_SUFFIX})
+ endif()
+ 
++set(CMAKE_SYSTEM_NAME Windows)
++
+ project(libjpeg-turbo C)
+ set(VERSION 2.0.5)
+ string(REPLACE "." ";" VERSION_TRIPLET ${VERSION})
+diff --git a/sharedlib/CMakeLists.txt b/sharedlib/CMakeLists.txt
+index 82950a65b..cb361d5a1 100644
+--- a/sharedlib/CMakeLists.txt
++++ b/sharedlib/CMakeLists.txt
+@@ -14,7 +14,7 @@ if(MSVC)
+   foreach(var CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
+     CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO)
+     if(${var} MATCHES "/MT")
+-      string(REGEX REPLACE "/MT" "/MD" ${var} "${${var}}")
++      #string(REGEX REPLACE "/MT" "/MD" ${var} "${${var}}")
+     endif()
+   endforeach()
+ endif()
+@@ -55,7 +55,7 @@ if(MSVC)
+   set_target_properties(jpeg PROPERTIES
+     RUNTIME_OUTPUT_NAME jpeg${SO_MAJOR_VERSION})
+   # The jsimd_*.c file is built using /MT, so this prevents a linker warning.
+-  set_target_properties(jpeg PROPERTIES LINK_FLAGS "/NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD")
++  # set_target_properties(jpeg PROPERTIES LINK_FLAGS "/NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD")
+ elseif(MINGW)
+   set_target_properties(jpeg PROPERTIES SUFFIX -${SO_MAJOR_VERSION}.dll)
+ endif()

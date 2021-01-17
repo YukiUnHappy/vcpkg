@@ -34,6 +34,16 @@ if(NOT _CMAKE_IN_TRY_COMPILE)
     set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "/nologo /DEBUG /INCREMENTAL:NO /OPT:REF /OPT:ICF ${VCPKG_LINKER_FLAGS} ${VCPKG_LINKER_FLAGS_RELEASE}" CACHE STRING "")
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/nologo /DEBUG /INCREMENTAL:NO /OPT:REF /OPT:ICF ${VCPKG_LINKER_FLAGS} ${VCPKG_LINKER_FLAGS_RELEASE}" CACHE STRING "")
 
+    #####################################################################################
+    # 我们添加以下，内容。当VCPKG_TARGET_TRIPLET末尾包含“-ltl”字符串时，加载VC-LTL。
+    # VCPKG_TARGET_TRIPLET 就是triplet文件名，即“x86-windows-static-ltl”。
+    if(VCPKG_TARGET_TRIPLET)
+        if("${VCPKG_TARGET_TRIPLET}" MATCHES "-ltl")
+            include("${CMAKE_CURRENT_LIST_DIR}/VC-LTL helper for cmake.cmake")
+        endif()
+    endif()
+    #####################################################################################
+
     string(APPEND CMAKE_STATIC_LINKER_FLAGS_DEBUG_INIT " /nologo ")
     string(APPEND CMAKE_SHARED_LINKER_FLAGS_DEBUG_INIT " /nologo ${VCPKG_LINKER_FLAGS} ${VCPKG_LINKER_FLAGS_DEBUG} ")
     string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG_INIT " /nologo ${VCPKG_LINKER_FLAGS} ${VCPKG_LINKER_FLAGS_DEBUG} ")
