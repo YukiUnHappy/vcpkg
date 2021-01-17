@@ -1,0 +1,27 @@
+diff --git a/utils/ImageOutputDev.cc b/utils/ImageOutputDev.cc
+index c438ce33a..33019396f 100644
+--- a/utils/ImageOutputDev.cc
++++ b/utils/ImageOutputDev.cc
+@@ -65,8 +65,8 @@ ImageOutputDev::ImageOutputDev(char *fileRootA, bool pageNamesA, bool listImages
+     dumpJBIG2 = false;
+     dumpCCITT = false;
+     pageNames = pageNamesA;
+-    imgNum = 0;
+-    pageNum = 0;
++    imgNum = 1;
++    pageNum = 1;
+     ok = true;
+     if (listImages) {
+         printf("page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-ppi size ratio\n");
+@@ -85,9 +85,9 @@ ImageOutputDev::~ImageOutputDev()
+ void ImageOutputDev::setFilename(const char *fileExt)
+ {
+     if (pageNames) {
+-        sprintf(fileName, "%s-%03d-%03d.%s", fileRoot, pageNum, imgNum, fileExt);
++        sprintf(fileName, "%s%03d-%03d.%s", fileRoot, pageNum, imgNum, fileExt);
+     } else {
+-        sprintf(fileName, "%s-%03d.%s", fileRoot, imgNum, fileExt);
++        sprintf(fileName, "%s%03d.%s", fileRoot, imgNum, fileExt);
+     }
+ }
+ 

@@ -8,6 +8,7 @@ vcpkg_from_github(
         0001-remove-CMAKE_CXX_STANDARD.patch
         0002-remove-test-subdirectory.patch
         0003-fix-gperf-not-recognized.patch
+        9999-fix-output-format.patch
 )
 
 vcpkg_find_acquire_program(GPERF)
@@ -28,7 +29,7 @@ vcpkg_configure_cmake(
         -DBUILD_QT6_TESTS=OFF
         -DBUILD_CPP_TESTS=OFF
         -DENABLE_LIBCURL=${ENABLE_CURL}
-        -DENABLE_UTILS=OFF
+        -DENABLE_UTILS=ON
         -DENABLE_GLIB=OFF
         -DENABLE_GLOBJECT_INTROSPECTION=OFF
         -DENABLE_QT5=OFF
@@ -37,6 +38,24 @@ vcpkg_configure_cmake(
 )
 
 vcpkg_install_cmake()
+
+file(MAKE_DIRECTORY ${CURRENT_PACKAGES_DIR}/tools/poppler/)
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdfattach${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdfattach${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdfdetach${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdfdetach${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdffonts${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdffonts${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdfimages${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdfimages${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdfinfo${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdfinfo${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdfseparate${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdfseparate${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdftohtml${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdftohtml${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdftoppm${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdftoppm${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdftops${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdftops${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdftotext${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdftotext${VCPKG_HOST_EXECUTABLE_SUFFIX})
+file(RENAME ${CURRENT_PACKAGES_DIR}/bin/pdfunite${VCPKG_HOST_EXECUTABLE_SUFFIX} ${CURRENT_PACKAGES_DIR}/tools/poppler/pdfunite${VCPKG_HOST_EXECUTABLE_SUFFIX})
+vcpkg_copy_tool_dependencies(${CURRENT_PACKAGES_DIR}/tools/poppler)
+
+if(VCPKG_LIBRARY_LINKAGE STREQUAL "static")
+    file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/bin" "${CURRENT_PACKAGES_DIR}/debug/bin")
+endif()
 
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
 
